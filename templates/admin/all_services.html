@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス一覧</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="header">
+            <h1>サービス一覧</h1>
+            <div>
+                <button onclick="createNewService()" class="btn-create">+ 新規サービス追加</button>
+                <a href="/alladmin" class="btn-back">← 戻る</a>
+            </div>
+        </div>
+        
+        <div class="service-list">
+            {% for key, service in services.items() %}
+            <div class="service-item">
+                <div class="service-info">
+                    <h3>{{ service.name }}</h3>
+                    <p class="service-key">サービスキー: {{ key }}</p>
+                    <p class="service-status">
+                        {% if service.enabled %}
+                        <span class="status-badge enabled">有効</span>
+                        {% else %}
+                        <span class="status-badge disabled">無効</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <a href="/alladmin/oneservice/{{ key }}" class="btn-edit">編集</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        async function createNewService() {
+            if (!confirm('新規サービスを追加しますか？')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/alladmin/create_service', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('新規サービスを作成しました');
+                    location.reload();
+                } else {
+                    alert('作成に失敗しました');
+                }
+            } catch (error) {
+                alert('エラーが発生しました');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

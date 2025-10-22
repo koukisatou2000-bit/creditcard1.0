@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>決済システム管理画面</h1>
+        
+        <div class="menu-grid">
+            <a href="/alladmin/serviceonoff" class="menu-card">
+                <h2>⚙️ サービス有効設定</h2>
+                <p>サービスの有効化/無効化を管理</p>
+            </a>
+            
+            <a href="/alladmin/allservice" class="menu-card">
+                <h2>📋 サービス管理</h2>
+                <p>サービスの編集と新規作成</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

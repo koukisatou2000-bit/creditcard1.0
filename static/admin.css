@@ -1,0 +1,399 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    padding-bottom: 25px;
+    border-bottom: 3px solid #1a237e;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a237e;
+    letter-spacing: -0.5px;
+}
+
+.header div {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #ffffff;
+    border: 2px solid #1a237e;
+    color: #1a237e;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #1a237e;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+}
+
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4);
+}
+
+/* メニューグリッド */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 35px;
+    margin-top: 40px;
+}
+
+.menu-card {
+    position: relative;
+    padding: 45px 35px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #e3f2fd;
+    text-decoration: none;
+    color: #1a237e;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+.menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #1a237e 0%, #3949ab 100%);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.menu-card:hover::before {
+    transform: scaleX(1);
+}
+
+.menu-card:hover {
+    border-color: #1a237e;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(26, 35, 126, 0.15);
+}
+
+.menu-card h2 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #1a237e;
+    font-weight: 700;
+}
+
+.menu-card p {
+    color: #546e7a;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* サービスリスト */
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 35px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #e3f2fd;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    border-color: #1a237e;
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(26, 35, 126, 0.1);
+}
+
+.service-info h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #1a237e;
+    font-weight: 700;
+}
+
+.service-key {
+    font-size: 13px;
+    color: #78909c;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    background-color: #eceff1;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.service-status {
+    margin-top: 8px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.status-badge.enabled {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(26, 35, 126, 0.3);
+}
+
+.status-badge.disabled {
+    background-color: #eceff1;
+    color: #78909c;
+}
+
+.toggle-btn {
+    padding: 12px 28px;
+    border: 2px solid;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.toggle-btn.enabled {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: #ffffff;
+    border-color: #1a237e;
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+}
+
+.toggle-btn.enabled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+}
+
+.toggle-btn.disabled {
+    background-color: #ffffff;
+    color: #78909c;
+    border-color: #cfd8dc;
+}
+
+.toggle-btn.disabled:hover {
+    background-color: #eceff1;
+    border-color: #90a4ae;
+}
+
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.2);
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4);
+}
+
+/* 編集画面 */
+.edit-container {
+    margin-top: 40px;
+}
+
+.edit-info {
+    padding: 30px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left: 5px solid #1a237e;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(26, 35, 126, 0.1);
+}
+
+.edit-info p {
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #263238;
+    font-weight: 500;
+}
+
+.edit-info p:last-child {
+    margin-bottom: 0;
+}
+
+.edit-info strong {
+    color: #1a237e;
+    font-weight: 700;
+}
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+#editForm label {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a237e;
+    margin-bottom: 10px;
+}
+
+#editForm textarea {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid #e3f2fd;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    resize: vertical;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+#editForm textarea:focus {
+    outline: none;
+    border-color: #1a237e;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(26, 35, 126, 0.1);
+}
+
+.btn-save {
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+}
+
+.btn-save:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(26, 35, 126, 0.4);
+}
+
+.error-msg {
+    padding: 20px;
+    background-color: #ffebee;
+    border-left: 5px solid #c62828;
+    color: #c62828;
+    border-radius: 8px;
+    display: none;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.1);
+}
+
+.error-msg:not(:empty) {
+    display: block;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+    
+    .admin-container {
+        padding: 30px 20px;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .header h1 {
+        font-size: 28px;
+    }
+    
+    .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-edit, .toggle-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "testservice": {
+    "name": "テストサービス",
+    "enabled": true,
+    "display_name": "テストサービス決済システム",
+    "logo_url": "",
+    "design": {
+      "primary_color": "#000000",
+      "secondary_color": "#ffffff",
+      "background_color": "#ffffff",
+      "text_color": "#000000",
+      "button_bg_color": "#000000",
+      "button_text_color": "#ffffff",
+      "border_color": "#000000",
+      "font_family": "Arial, sans-serif",
+      "custom_css": ""
+    }
+  },
+  "noname1": {
+    "name": "楽天モバイル決済システム",
+    "enabled": true,
+    "display_name": "",
+    "logo_url": "data:image/png;base64,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",
+    "design": {
+      "primary_color": "#ff0000",
+      "secondary_color": "#d3d3d3",
+      "background_color": "#ffffff",
+      "text_color": "#000000",
+      "button_bg_color": "#d3d3d3",
+      "button_text_color": "#ff0000",
+      "border_color": "#ff0000",
+      "font_family": "Arial, sans-serif",
+      "custom_css": ""
+    }
+  }
+}

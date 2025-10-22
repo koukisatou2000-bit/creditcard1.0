@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>決済完了 - {{ service.display_name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: {{ service.design.font_family }};
+            background-color: {{ service.design.background_color }};
+            color: {{ service.design.text_color }};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: {{ service.design.background_color }};
+            border: 2px solid {{ service.design.border_color }};
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .complete-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .complete-message h1 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: {{ service.design.text_color }};
+        }
+
+        .complete-message h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: {{ service.design.text_color }};
+        }
+
+        .complete-message p {
+            font-size: 16px;
+            color: {{ service.design.text_color }};
+        }
+
+        /* カスタムCSS */
+        {{ service.design.custom_css | safe }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="complete-message">
+            <h1>✓</h1>
+            <h2>決済が完了しました</h2>
+            <p>ご利用ありがとうございました</p>
+        </div>
+    </div>
+</body>
+</html>

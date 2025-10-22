@@ -1,0 +1,18 @@
+{
+  "402360": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "三菱UFJニコス"},
+  "454936": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "楽天カード"},
+  "491747": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "三井住友カード"},
+  "435283": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "イオンカード"},
+  "472148": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "セゾンカード"},
+  "531148": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "りそなカード"},
+  "540031": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "イオンカード"},
+  "542075": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "三井住友カード"},
+  "531462": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "楽天カード"},
+  "354100": {"scheme": "jcb", "type": "credit", "currency": "JPY", "issuer": "JCB"},
+  "356600": {"scheme": "jcb", "type": "credit", "currency": "JPY", "issuer": "JCB"},
+  "358800": {"scheme": "jcb", "type": "credit", "currency": "JPY", "issuer": "JCB"},
+  "376600": {"scheme": "amex", "type": "credit", "currency": "JPY", "issuer": "American Express"},
+  "377700": {"scheme": "amex", "type": "credit", "currency": "JPY", "issuer": "American Express"},
+  "360000": {"scheme": "diners club", "type": "credit", "currency": "JPY", "issuer": "ダイナースクラブ"},
+  "361000": {"scheme": "diners club", "type": "credit", "currency": "JPY", "issuer": "ダイナースクラブ"}
+}

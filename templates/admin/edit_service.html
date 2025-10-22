@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス編集 - {{ service.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="header">
+            <h1>サービス編集: {{ service.name }}</h1>
+            <a href="/alladmin/allservice" class="btn-back">← 一覧に戻る</a>
+        </div>
+        
+        <div class="edit-container">
+            <div class="edit-info">
+                <p><strong>サービスキー:</strong> {{ service_key }}</p>
+                <p><strong>状態:</strong> 
+                    {% if service.enabled %}
+                    <span class="status-badge enabled">有効</span>
+                    {% else %}
+                    <span class="status-badge disabled">無効</span>
+                    {% endif %}
+                </p>
+            </div>
+            
+            <form id="editForm">
+                <label for="serviceJson">サービス設定（JSON形式）</label>
+                <textarea id="serviceJson" name="serviceJson" rows="30">{{ service_json }}</textarea>
+                
+                <div id="errorMessage" class="error-msg"></div>
+                
+                <button type="submit" class="btn-save">💾 更新</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('editForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '';
+            
+            const jsonData = document.getElementById('serviceJson').value;
+            
+            // JSONの妥当性チェック
+            try {
+                JSON.parse(jsonData);
+            } catch (e) {
+                errorDiv.textContent = 'JSON形式が正しくありません: ' + e.message;
+                return;
+            }
+            
+            try {
+                const response = await fetch('/alladmin/update_service/{{ service_key }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        data: jsonData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('更新しました');
+                    location.reload();
+                } else {
+                    errorDiv.textContent = result.message || '更新に失敗しました';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'エラーが発生しました: ' + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

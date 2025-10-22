@@ -1,0 +1,300 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 20px;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+}
+
+.header div {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 2px solid #000;
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-create {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-create:hover {
+    background-color: #333;
+}
+
+/* メニューグリッド */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.menu-card {
+    padding: 40px;
+    background-color: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    text-decoration: none;
+    color: #000;
+    transition: all 0.3s;
+}
+
+.menu-card:hover {
+    border-color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.menu-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* サービスリスト */
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+.service-item:hover {
+    border-color: #000;
+}
+
+.service-info h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.service-key {
+    font-size: 12px;
+    color: #666;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 8px;
+}
+
+.service-status {
+    margin-top: 5px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.status-badge.enabled {
+    background-color: #000;
+    color: #fff;
+}
+
+.status-badge.disabled {
+    background-color: #e0e0e0;
+    color: #666;
+}
+
+.toggle-btn {
+    padding: 10px 25px;
+    border: 2px solid;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.toggle-btn.enabled {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.toggle-btn.enabled:hover {
+    background-color: #333;
+}
+
+.toggle-btn.disabled {
+    background-color: #fff;
+    color: #666;
+    border-color: #e0e0e0;
+}
+
+.toggle-btn.disabled:hover {
+    background-color: #f5f5f5;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #333;
+}
+
+/* 編集画面 */
+.edit-container {
+    margin-top: 30px;
+}
+
+.edit-info {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.edit-info p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.edit-info p:last-child {
+    margin-bottom: 0;
+}
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#editForm label {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#editForm textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+#editForm textarea:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.btn-save {
+    padding: 15px 30px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+}
+
+.btn-save:hover {
+    background-color: #333;
+}
+
+.error-msg {
+    padding: 15px;
+    background-color: #ffebee;
+    border: 2px solid #c62828;
+    color: #c62828;
+    display: none;
+}
+
+.error-msg:not(:empty) {
+    display: block;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 20px;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+}

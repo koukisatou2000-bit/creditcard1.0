@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エラー</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: {{ service.design.font_family if service.design else 'Arial, sans-serif' }};
+            background-color: {{ service.design.background_color if service.design else '#ffffff' }};
+            color: {{ service.design.text_color if service.design else '#000000' }};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: {{ service.design.background_color if service.design else '#ffffff' }};
+            border: 2px solid {{ service.design.border_color if service.design else '#000000' }};
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .error-page {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .error-page h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: {{ service.design.text_color if service.design else '#000000' }};
+        }
+
+        .error-page p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: {{ service.design.text_color if service.design else '#000000' }};
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: {{ service.design.button_bg_color if service.design else '#000000' }};
+            color: {{ service.design.button_text_color if service.design else '#ffffff' }};
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* カスタムCSS */
+        {% if service.design and service.design.custom_css %}
+        {{ service.design.custom_css | safe }}
+        {% endif %}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-page">
+            <h1>エラー</h1>
+            <p>{{ message }}</p>
+            {% if service_key %}
+            <a href="/{{ service_key }}" class="btn">最初から</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
