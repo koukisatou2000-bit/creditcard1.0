@@ -22,6 +22,17 @@
                 <div class="service-info">
                     <h3>{{ service.name }}</h3>
                     <p class="service-key">サービスキー: {{ key }}</p>
+                    {% if service.title %}
+                    <p class="service-detail"><strong>タイトル:</strong> {{ service.title }}</p>
+                    {% endif %}
+                    {% if service.description %}
+                    <p class="service-detail"><strong>説明文:</strong> {{ service.description }}</p>
+                    {% endif %}
+                    <p class="service-link">
+                        <strong>リンク:</strong> 
+                        <span class="link-display">/{{ service.custom_link if service.custom_link else key }}</span>
+                        <button class="btn-copy-small" onclick="copyLink('{{ service.custom_link if service.custom_link else key }}')">📋</button>
+                    </p>
                     <p class="service-status">
                         {% if service.enabled %}
                         <span class="status-badge enabled">有効</span>
@@ -59,6 +70,15 @@
                 alert('エラーが発生しました');
                 console.error(error);
             }
+        }
+
+        function copyLink(customLink) {
+            const fullLink = `${window.location.origin}/${customLink}`;
+            navigator.clipboard.writeText(fullLink).then(() => {
+                alert('リンクをコピーしました:\n' + fullLink);
+            }).catch(() => {
+                alert('コピーに失敗しました');
+            });
         }
     </script>
 </body>

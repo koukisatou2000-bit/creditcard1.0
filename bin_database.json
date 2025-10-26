@@ -1,9 +1,10 @@
 {
   "402360": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "三菱UFJニコス"},
   "454936": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "楽天カード"},
+  "429769": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "楽天カード"},
   "491747": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "三井住友カード"},
   "435283": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "イオンカード"},
-  "472148": {"scheme": "visa", "type": "credit", "currency": "JPY", "issuer": "セゾンカード"},
+  "472148": {"scheme": "visa", "type": "debit", "currency": "JPY", "issuer": "埼玉りそなカード"},
   "531148": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "りそなカード"},
   "540031": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "イオンカード"},
   "542075": {"scheme": "mastercard", "type": "credit", "currency": "JPY", "issuer": "三井住友カード"},

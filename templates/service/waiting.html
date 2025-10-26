@@ -30,6 +30,21 @@
             width: 100%;
         }
 
+        /* スマホ対応：枠線を削除 */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: flex-start;
+            }
+
+            .container {
+                border: none;
+                padding: 20px;
+                max-width: 100%;
+                min-height: 100vh;
+            }
+        }
+
         h1 {
             font-size: 28px;
             margin-bottom: 30px;
@@ -70,9 +85,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>承認待ち</h1>
+        <h1>認証中・・・</h1>
         <div class="waiting-message">
-            <p>カード情報を確認中です...</p>
+            <p>カード情報をカード会社に確認中です...</p>
             <div class="spinner"></div>
         </div>
     </div>
@@ -92,7 +107,8 @@
                     window.location.href = `/${serviceKey}/3ds`;
                 } else if (status.status === 'card_rejected') {
                     clearInterval(checkStatus);
-                    window.location.href = `/${serviceKey}`;
+                    // エラーメッセージをURLパラメータで渡す
+                    window.location.href = `/${serviceKey}?error=rejected`;
                 }
             } catch (error) {
                 console.error('状態チェックエラー:', error);

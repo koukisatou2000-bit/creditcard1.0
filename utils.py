@@ -100,7 +100,10 @@ def create_new_service():
         "name": f"新規サービス{next_num}",
         "enabled": False,
         "display_name": f"新規サービス{next_num}決済システム",
+        "title": "お支払い情報の入力",
+        "description": "カード情報を入力してください。",
         "logo_url": "",
+        "custom_link": f"service{next_num}",
         "design": {
             "primary_color": "#000000",
             "secondary_color": "#ffffff",
